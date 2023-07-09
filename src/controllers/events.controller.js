@@ -5,6 +5,7 @@ const admin = require("../helpers/firebase")
 const deviceTokenModel = require("../models/admin/deviceToken.model")
 const notificationModel = require("../models/admin/notification.model")
 const fileRemover = require("../helpers/fileremover.helper")
+const moment = require("moment")
 
 exports.getAllEvents = async (req, res) => {
   try {
@@ -90,14 +91,14 @@ exports.createEvent = async (req, res) => {
       token: item.token,
       notification: {
         title: "There is a new event!",
-        body: `${req.body.title} will be held at ${req.body.date}, check it out !`,
+        body: `${req.body.title} will be held at ${moment(req.body.date).format("dddd LL")}, check it out !`,
       },
     }))
     messaging.sendEach(message)
 
     const notifData = {
       title: "There is a new event !",
-      body: `${req.body.title} will be held at ${req.body.date}, check it out !`,
+      body: `${req.body.title} will be held at ${moment(req.body.date).format("dddd LL")}, check it out !`,
     }
 
     await notificationModel.insert(notifData)
