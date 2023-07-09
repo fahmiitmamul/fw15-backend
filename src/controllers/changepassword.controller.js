@@ -6,6 +6,9 @@ const usersModel = require("../models/admin/users.model")
 exports.changePassword = async (req, res) => {
   try {
     const { id } = req.user
+    if (!id) {
+      throw Error("Unauthorized")
+    }
     let { password } = await usersModel.findOne(id)
     const { oldPassword } = req.body
     const newPassword = await argon.hash(req.body.newPassword)

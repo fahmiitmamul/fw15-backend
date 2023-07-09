@@ -71,6 +71,10 @@ exports.createEvent = async (req, res) => {
 
     const { id } = req.user
 
+    if (!id) {
+      throw Error("Unauthorized")
+    }
+
     let data = { ...req.body, createdBy: id }
     const event = await eventsModel.insert(data)
     const eventCategories = {
@@ -114,11 +118,11 @@ exports.updateEvents = async (req, res) => {
       req.body.picture = req.file.filename
     }
     const { id } = req.user
-    const events = await eventsModel.findOne(req.params.id)
-    await cloudinary.uploader.destroy(events.picture)
     if (!id) {
       throw Error("Unauthorized")
     }
+    const events = await eventsModel.findOne(req.params.id)
+    await cloudinary.uploader.destroy(events.picture)
 
     const eventId = req.params.id
     const data = { ...req.body }

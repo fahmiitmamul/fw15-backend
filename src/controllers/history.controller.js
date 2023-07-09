@@ -4,6 +4,11 @@ const errorHandler = require("../helpers/errorHandler.helper")
 exports.getHistory = async (req, res) => {
   try {
     const { id } = req.user
+
+    if (!id) {
+      throw Error("Unauthorized")
+    }
+
     const history = await reservationsModel.findOneByUserId(id)
     return res.json({
       success: true,

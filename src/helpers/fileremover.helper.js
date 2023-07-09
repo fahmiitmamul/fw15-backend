@@ -1,17 +1,12 @@
-const fs = require("fs")
+const cloudinary = require("cloudinary").v2
 
-const fileRemover = (file) => {
+const fileRemover = async (file) => {
   if (file) {
-    const filename = `uploads/${file.filename}`
-    fs.unlink(filename, (err) => {
-      try {
-        if (err) {
-          throw Error(err.message)
-        }
-      } catch (err) {
-        console.log(err)
-      }
-    })
+    try {
+      await cloudinary.uploader.destroy(file)
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
 

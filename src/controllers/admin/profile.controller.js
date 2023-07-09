@@ -41,7 +41,7 @@ exports.getOneProfile = async (request, response) => {
 exports.createProfile = async (request, response) => {
   try {
     if (request.file) {
-      request.body.picture = request.file.filename
+      request.body.picture = request.file.path
     }
     const profile = await profileModel.insert(request.body)
     return response.json({

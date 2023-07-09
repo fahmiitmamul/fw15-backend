@@ -8,6 +8,10 @@ exports.updateProfile = async (req, res) => {
   try {
     const { id } = req.user
 
+    if (!id) {
+      throw Error("Unauthorized")
+    }
+
     const user = await profileModel.findOneByUserId(id)
     const users = { username: req.body.username, email: req.body.email }
     const data = {
@@ -19,7 +23,7 @@ exports.updateProfile = async (req, res) => {
       }
       data.picture = req.file.path
       const profile = await profileModel.findOne(id)
-      // await cloudinary.uploader.destroy(profile.picture)
+      await cloudinary.uploader.destroy(profile.picture)
     }
     const profileUpdate = await profileModel.updatebyUserId(id, data)
     const usersUpdate = await usersModel.update(id, users)
@@ -39,6 +43,11 @@ exports.updateProfile = async (req, res) => {
 exports.getProfile = async (req, res) => {
   try {
     const { id } = req.user
+
+    if (!id) {
+      throw Error("Unauthorized")
+    }
+
     const profile = await profileModel.findOneByUserId(id)
     if (!profile) {
       throw Error("profile_not_found")

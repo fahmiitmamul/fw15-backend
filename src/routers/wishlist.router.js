@@ -4,6 +4,6 @@ const validate = require("../middlewares/validator.middleware")
 
 wishlistRouter.get("/", validate("getOne"), wishlistController.getWishlist)
 wishlistRouter.post("/", validate("manageWishlist"), wishlistController.makeWishlist)
-wishlistRouter.delete("/:id", wishlistController.deleteWishlist)
+wishlistRouter.delete("/:id", validate("Delete"), wishlistController.deleteWishlist)
 
 module.exports = wishlistRouter

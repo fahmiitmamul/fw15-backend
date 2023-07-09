@@ -5,6 +5,11 @@ const wishlistModel = require("../models/admin/wishlist.model")
 exports.getWishlist = async (req, res) => {
   try {
     let { id } = req.user
+
+    if (!id) {
+      throw Error("Unauthorized")
+    }
+
     let wishlistData = await wishlistModel.findOneById(id)
     return res.json({
       success: true,
@@ -19,6 +24,10 @@ exports.getWishlist = async (req, res) => {
 exports.makeWishlist = async (req, res) => {
   try {
     let { id } = req.user
+
+    if (!id) {
+      throw Error("Unauthorized")
+    }
 
     const data = { ...req.body, userId: id }
 
@@ -45,6 +54,11 @@ exports.deleteWishlist = async (req, res) => {
 
     if (!id) {
       throw Error("Unauthorized")
+    }
+
+    const wishlistId = await wishlistModel.findOne(req.params.id)
+    if (!wishlistId) {
+      throw Error("No wishlist found")
     }
 
     let data = await wishlistModel.destroy(req.params.id)

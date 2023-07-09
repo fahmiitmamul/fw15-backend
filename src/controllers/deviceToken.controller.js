@@ -23,6 +23,9 @@ exports.getAll = async (req, res) => {
 exports.saveToken = async (req, res) => {
   try {
     const { id } = req.user
+    if (!id) {
+      throw Error("Unauthorized")
+    }
     const data = req.body
     const dataResults = await deviceTokenModel.insert(id, data)
     return res.json({

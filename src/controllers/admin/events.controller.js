@@ -40,7 +40,7 @@ exports.getOneEvents = async (request, response) => {
 exports.createEvents = async (request, response) => {
   try {
     if (request.file) {
-      request.body.picture = request.file.filename
+      request.body.picture = request.file.path
     }
     const user = await eventsModel.insert(request.body)
     return response.json({
@@ -57,7 +57,7 @@ exports.updateEvents = async (request, response) => {
   try {
     const data = await eventsModel.update(request.params.id, request.body)
     if (request.file) {
-      request.body.picture = request.file.filename
+      request.body.picture = request.file.path
     }
     if (data) {
       return response.json({

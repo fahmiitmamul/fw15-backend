@@ -39,6 +39,11 @@ const errorHandler = (response, e) => {
       success: false,
       message: "Can't make wishlist because event is not found",
     })
+  } else if (e?.message?.includes("No wishlist found")) {
+    return response.status(404).json({
+      success: false,
+      message: "Wishlist not found",
+    })
   } else if (e?.message?.includes("wrong_password")) {
     return response.status(400).json({
       success: false,
