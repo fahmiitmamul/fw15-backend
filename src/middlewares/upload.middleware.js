@@ -21,7 +21,7 @@ const storage = new CloudinaryStorage({
 })
 
 const limits = {
-  fileSize: 1 * 2048 * 4096,
+  fileSize: 1 * 4096 * 4096,
 }
 const fileFilter = (req, file, cb) => {
   if (
