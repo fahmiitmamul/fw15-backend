@@ -4,7 +4,8 @@ require("dotenv").config({
 
 const express = require("express")
 const app = express()
-app.use(express.urlencoded({ extended: false }))
+app.use(express.json({limit: "10mb", extended: true}))
+app.use(express.urlencoded({limit: "10mb", extended: true, parameterLimit: 50000}))
 app.use("/uploads", express.static("uploads"))
 const PORT = process.env.PORT
 
