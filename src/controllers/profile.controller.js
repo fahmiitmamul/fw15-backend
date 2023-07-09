@@ -19,7 +19,7 @@ exports.updateProfile = async (req, res) => {
       }
       data.picture = req.file.path
       const profile = await profileModel.findOne(id)
-      await cloudinary.uploader.destroy(profile.picture)
+      // await cloudinary.uploader.destroy(profile.picture)
     }
     const profileUpdate = await profileModel.updatebyUserId(id, data)
     const usersUpdate = await usersModel.update(id, users)
