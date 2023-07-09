@@ -1,6 +1,6 @@
 const citiesModel = require("../../models/admin/cities.model")
 const errorHandler = require("../../helpers/errorHandler.helper")
-const cloudinary = require("cloudinary").v2
+const fileRemover = require("../../helpers/fileremover.helper")
 
 exports.getAllcities = async (request, response) => {
   try {
@@ -58,7 +58,9 @@ exports.updatecities = async (request, response) => {
   try {
     const cities = await citiesModel.findOne(request.params.id)
     const data = await citiesModel.update(request.params.id, request.body)
-    await cloudinary.uploader.destroy(cities.picture)
+    if (cities.picture) {
+      fileRemover(cities.picture)
+    }
     if (request.file) {
       request.body.picture = request.file.filename
     }
@@ -80,7 +82,9 @@ exports.deletecities = async (request, response) => {
   try {
     const cities = await citiesModel.findOne(request.params.id)
     const data = await citiesModel.destroy(request.params.id)
-    await cloudinary.uploader.destroy(cities.picture)
+    if (cities.picture) {
+      fileRemover(cities.picture)
+    }
     if (data) {
       return response.json({
         success: true,

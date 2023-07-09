@@ -1,10 +1,10 @@
 const errorHandler = require("../helpers/errorHandler.helper")
 const eventsModel = require("../models/admin/events.model")
 const eventCategoriesModel = require("../models/admin/eventcategories.model")
-const cloudinary = require("cloudinary").v2
 const admin = require("../helpers/firebase")
 const deviceTokenModel = require("../models/admin/deviceToken.model")
 const notificationModel = require("../models/admin/notification.model")
+const fileRemover = require("../helpers/fileremover.helper")
 
 exports.getAllEvents = async (req, res) => {
   try {
@@ -122,7 +122,10 @@ exports.updateEvents = async (req, res) => {
       throw Error("Unauthorized")
     }
     const events = await eventsModel.findOne(req.params.id)
-    await cloudinary.uploader.destroy(events.picture)
+
+    if (events.picture) {
+      fileRemover(events.picture)
+    }
 
     const eventId = req.params.id
     const data = { ...req.body }
@@ -153,7 +156,9 @@ exports.destroy = async (req, res) => {
     }
     const events = await eventsModel.findOne(req.params.id)
     const data = await eventsModel.destroy(req.params.id)
-    await cloudinary.uploader.destroy(events.picture)
+    if (events.picture) {
+      fileRemover(events.picture)
+    }
     await eventCategoriesModel.destroy(req.params.id)
     return res.json({
       success: true,

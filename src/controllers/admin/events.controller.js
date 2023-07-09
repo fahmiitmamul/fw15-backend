@@ -1,5 +1,6 @@
 const eventsModel = require("../../models/admin/events.model")
 const errorHandler = require("../../helpers/errorHandler.helper")
+const fileRemover = require("../../helpers/fileremover.helper")
 
 exports.getAllEvents = async (request, response) => {
   try {
@@ -55,9 +56,13 @@ exports.createEvents = async (request, response) => {
 
 exports.updateEvents = async (request, response) => {
   try {
+    const events = await eventsModel.findOne(request.params.id)
     const data = await eventsModel.update(request.params.id, request.body)
     if (request.file) {
       request.body.picture = request.file.path
+    }
+    if (events.picture) {
+      fileRemover(events.picture)
     }
     if (data) {
       return response.json({

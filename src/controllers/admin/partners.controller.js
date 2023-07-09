@@ -1,6 +1,6 @@
 const partnersModel = require("../../models/admin/partners.model")
 const errorHandler = require("../../helpers/errorHandler.helper")
-const cloudinary = require("cloudinary").v2
+const fileRemover = require("../../helpers/fileremover.helper")
 
 exports.getAllPartners = async (request, response) => {
   try {
@@ -58,7 +58,9 @@ exports.updatePartners = async (request, response) => {
   try {
     const data = await partnersModel.update(request.params.id, request.body)
     const partners = await partnersModel.findOne(request.params.id)
-    await cloudinary.uploader.destroy(partners.picture)
+    if (partners.picture) {
+      fileRemover(partners.picture)
+    }
     if (request.file) {
       request.body.picture = request.file.filename
     }
@@ -80,7 +82,9 @@ exports.deletePartners = async (request, response) => {
   try {
     const partners = await partnersModel.findOne(request.params.id)
     const data = await partnersModel.destroy(request.params.id)
-    await cloudinary.uploader.destroy(partners.picture)
+    if (partners.picture) {
+      fileRemover(partners.picture)
+    }
     if (data) {
       return response.json({
         success: true,

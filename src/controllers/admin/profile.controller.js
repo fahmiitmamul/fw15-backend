@@ -1,6 +1,6 @@
 const profileModel = require("../../models/admin/profile.model")
 const errorHandler = require("../../helpers/errorHandler.helper")
-const cloudinary = require("cloudinary").v2
+const fileRemover = require("../../helpers/fileremover.helper")
 
 exports.getAllProfile = async (request, response) => {
   try {
@@ -41,7 +41,7 @@ exports.getOneProfile = async (request, response) => {
 exports.createProfile = async (request, response) => {
   try {
     if (request.file) {
-      request.body.picture = request.file.path
+      request.body.picture = request.file.filename
     }
     const profile = await profileModel.insert(request.body)
     return response.json({
@@ -56,6 +56,11 @@ exports.createProfile = async (request, response) => {
 
 exports.updateProfile = async (request, response) => {
   try {
+    const profile = await profileModel.findOne(request.params.id)
+
+    if (profile.picture) {
+      fileRemover(profile.picture)
+    }
     const data = await profileModel.update(request.params.id, request.body)
     if (data) {
       return response.json({
@@ -75,7 +80,9 @@ exports.deleteProfile = async (request, response) => {
   try {
     const profile = await profileModel.findOne(request.params.id)
     const data = await profileModel.destroy(request.params.id)
-    await cloudinary.uploader.destroy(profile.picture)
+    if (profile.picture) {
+      fileRemover(profile.picture)
+    }
     if (data) {
       return response.json({
         success: true,
