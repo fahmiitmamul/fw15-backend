@@ -21,18 +21,20 @@ const storage = new CloudinaryStorage({
 })
 
 const limits = {
-  fileSize: 1 * 1024 * 1024,
+  fileSize: 1 * 2048 * 4096,
 }
-const fileFilter = (file, cb) => {
+const fileFilter = (req, file, cb) => {
   if (
-    file.mimetype !== "image/jpeg" ||
-    file.mimetype !== "image/png" ||
-    file.mimetype !== "image/svg+xml" ||
-    file.mimetype !== "image/heic"
+    file.mimetype == "image/png" ||
+    file.mimetype == "image/jpg" ||
+    file.mimetype == "image/jpeg" ||
+    file.mimetype == "image/heic" ||
+    file.mimetype == "image/svg+xml"
   ) {
-    cb(Error("fileformat_error"))
+    cb(null, true)
+  } else {
+    return cb(new Error("Invalid mime type"))
   }
-  cb(null, true)
 }
 
 const upload = multer({ storage, limits, fileFilter })
@@ -50,7 +52,7 @@ const uploadMiddleware = (field) => {
         }
         return response.status(400).json({
           success: false,
-          message: "File too large",
+          message: err.message,
         })
       }
       return next()
