@@ -21,6 +21,6 @@ eventsRouter.patch(
 )
 eventsRouter.delete("/manage/:id", authMiddleware, eventsController.destroy)
 eventsRouter.get("/", validate("getAll"), eventsController.getAllEvents)
-eventsRouter.get("/:id", eventsController.getEventsByParamsId)
+eventsRouter.get("/:id", validate("Delete"), eventsController.getEventsByParamsId)
 
 module.exports = eventsRouter
