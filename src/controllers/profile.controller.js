@@ -21,7 +21,7 @@ exports.updateProfile = async (req, res) => {
       if (user.picture) {
         fileRemover({ filename: user.picture })
       }
-      data.picture = req.file.path
+      data.picture = req.file.filename
       // const profile = await profileModel.findOne(id)
       // await cloudinary.uploader.destroy(profile.picture)
     }
