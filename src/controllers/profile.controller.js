@@ -26,14 +26,14 @@ exports.updateProfile = async (req, res) => {
       // await cloudinary.uploader.destroy(profile.picture)
     }
     const profileUpdate = await profileModel.updatebyUserId(id, data)
-    const usersUpdate = await usersModel.update(id, users)
+    await usersModel.update(id, users)
     if (!profileUpdate) {
       throw Error("Update profile failed")
     }
     return res.json({
       success: true,
       message: "Profile updated",
-      result: { profileUpdate, usersUpdate },
+      result: { profileUpdate },
     })
   } catch (e) {
     return errorHandler(res, e)
