@@ -80,7 +80,7 @@ exports.update = async function (id, data) {
   UPDATE "${table}" 
   SET 
   "userId"=COALESCE(NULLIF($2::INTEGER, NULL), "userId"),
-  "picture"=COALESCE(NULLIF($3, ''), "picture"), 
+  "picture"=COALESCE(NULLIF($3, NULL), "picture"), 
   "fullName"=COALESCE(NULLIF($4, ''), "fullName"),
   "phoneNumber"=COALESCE(NULLIF($5, ''), "phoneNumber"),
   "gender"=COALESCE(NULLIF($6::BOOLEAN, NULL) "gender"),
