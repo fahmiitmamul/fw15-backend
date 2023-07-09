@@ -50,10 +50,6 @@ const uploadMiddleware = (field) => {
             message: "File format invalid",
           })
         }
-        return response.status(400).json({
-          success: false,
-          message: err.message,
-        })
       }
       return next()
     })
