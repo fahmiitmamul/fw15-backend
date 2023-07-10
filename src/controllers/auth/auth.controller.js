@@ -54,7 +54,7 @@ exports.register = async (request, response) => {
     const token = jwt.sign({ id: user.id }, APP_SECRET)
     return response.json({
       success: true,
-      message: "Register success!, you'll be redirected in seconds",
+      message: "Register success!",
       results: { token },
     })
   } catch (e) {
