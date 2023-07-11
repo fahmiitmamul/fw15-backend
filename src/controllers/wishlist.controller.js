@@ -39,16 +39,15 @@ exports.makeWishlist = async (req, res) => {
       throw Error("Can't make wishlist because event is not found")
     }
 
-    if(checkWishlist){
+    if (checkWishlist) {
       await wishlistModel.destroy(req.body.eventId)
     } else if (!checkWishlist) {
-      const wishlist = await wishlistModel.insert(data)
+      await wishlistModel.insert(data)
     }
 
     return res.json({
       success: true,
       message: "Insert wishlist successfully",
-      results: wishlist,
     })
   } catch (err) {
     return errorHandler(res, err)
@@ -63,12 +62,12 @@ exports.deleteWishlist = async (req, res) => {
       throw Error("Unauthorized")
     }
 
-    const wishlistId = await wishlistModel.findOne(req.params.id)
+    const wishlistId = await wishlistModel.findOne(req.params.eventId)
     if (!wishlistId) {
       throw Error("No wishlist found")
     }
 
-    let data = await wishlistModel.destroy(req.params.id)
+    let data = await wishlistModel.destroy(req.params.eventId)
     return res.json({
       success: true,
       message: "Delete wishlist successfully",
