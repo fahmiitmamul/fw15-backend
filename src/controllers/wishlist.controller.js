@@ -10,7 +10,7 @@ exports.getWishlist = async (req, res) => {
       throw Error("Unauthorized")
     }
 
-    let wishlistData = await wishlistModel.findOne(id)
+    let wishlistData = await wishlistModel.findOne(req.params.id)
     return res.json({
       success: true,
       message: "Get wishlist successfully",
