@@ -35,15 +35,15 @@ exports.makeWishlist = async (req, res) => {
 
     const checkWishlist = await wishlistModel.findOne(req.body.eventId)
 
-    if(checkWishlist){
-      await wishlistModel.destroy(req.body.eventId)
-    }
-
     if (!checkEvent) {
       throw Error("Can't make wishlist because event is not found")
     }
 
-    const wishlist = await wishlistModel.insert(data)
+    if(checkWishlist){
+      await wishlistModel.destroy(req.body.eventId)
+    } else if (!checkWishlist) {
+      const wishlist = await wishlistModel.insert(data)
+    }
 
     return res.json({
       success: true,
