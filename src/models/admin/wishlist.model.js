@@ -21,7 +21,7 @@ exports.findAll = async function (page, limit, sort, sortBy) {
 
 exports.findOne = async function (id) {
   const query = `
-  SELECT * FROM "${table}" WHERE id=$1
+  SELECT * FROM "${table}" WHERE "eventId"=$1
   `
 
   const values = [id]
@@ -74,7 +74,7 @@ exports.update = async function (id, data) {
 exports.destroy = async function (id) {
   const query = `
   DELETE FROM "${table}" 
-  WHERE "id"=$1
+  WHERE "eventId"=$1
   RETURNING *
   `
 
