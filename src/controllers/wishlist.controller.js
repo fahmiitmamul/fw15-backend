@@ -21,6 +21,25 @@ exports.getWishlist = async (req, res) => {
   }
 }
 
+exports.getAllWishlist = async (req, res) => {
+  try {
+    let { id } = req.user
+
+    if (!id) {
+      throw Error("Unauthorized")
+    }
+
+    let wishlistData = await wishlistModel.findOneById(id)
+    return res.json({
+      success: true,
+      message: "Get wishlist successfully",
+      results: wishlistData,
+    })
+  } catch (err) {
+    return errorHandler(res, err)
+  }
+}
+
 exports.makeWishlist = async (req, res) => {
   try {
     let { id } = req.user
