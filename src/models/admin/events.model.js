@@ -14,10 +14,10 @@ exports.findAll = async function (page, limit, search, sort, sortBy, category, l
   const countQuery = `
   SELECT COUNT(*)::INTEGER
   FROM "events"
-  WHERE "title" LIKE $1`;
+  WHERE "title" LIKE $1`
 
-  const countvalues = [`%${params.search}%`];
-  const { rows: countRows } = await db.query(countQuery, countvalues);
+  const countvalues = [`%${search}%`]
+  const { rows: countRows } = await db.query(countQuery, countvalues)
 
   const offset = (page - 1) * limit
   const query = `
@@ -42,12 +42,12 @@ exports.findAll = async function (page, limit, search, sort, sortBy, category, l
   return {
     rows,
     pageInfo: {
-        totalData: countRows[0].count,
-        page: page,
-        limit: limit,
-        totalPage: Math.ceil(countRows[0].count / limit),
+      totalData: countRows[0].count,
+      page: page,
+      limit: limit,
+      totalPage: Math.ceil(countRows[0].count / limit),
     },
-};
+  }
 }
 
 exports.findAllByUserId = async function (page, limit, search, sort, sortBy, category, location, id) {
