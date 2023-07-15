@@ -21,7 +21,7 @@ exports.findAll = async function (page, limit, sort, sortBy) {
 
 exports.findOne = async function (id, userId) {
   const query = `
-  SELECT * FROM "${table}" WHERE "eventId"=$1 AND "userId" = $2
+  SELECT * FROM "${table}" WHERE "eventId"=$1 AND "userId"=$2
   `
 
   const values = [id, userId]
