@@ -59,7 +59,7 @@ exports.makeWishlist = async (req, res) => {
     }
 
     if (checkWishlist) {
-      await wishlistModel.destroy(req.body.eventId)
+      await wishlistModel.destroy(req.body.eventId, id)
     } else if (!checkWishlist) {
       await wishlistModel.insert(data)
     }
