@@ -52,7 +52,7 @@ exports.makeWishlist = async (req, res) => {
 
     const checkEvent = await eventsModel.findOne(req.body.eventId)
 
-    const checkWishlist = await wishlistModel.findOne(req.body.eventId)
+    const checkWishlist = await wishlistModel.findOne(req.body.eventId, id)
 
     if (!checkEvent) {
       throw Error("Can't make wishlist because event is not found")

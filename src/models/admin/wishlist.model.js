@@ -19,12 +19,12 @@ exports.findAll = async function (page, limit, sort, sortBy) {
   return rows
 }
 
-exports.findOne = async function (id) {
+exports.findOne = async function (id, userId) {
   const query = `
-  SELECT * FROM "${table}" WHERE "eventId"=$1
+  SELECT * FROM "${table}" WHERE "eventId"=$1 AND "userId" = $2
   `
 
-  const values = [id]
+  const values = [id, userId]
   const { rows } = await db.query(query, values)
   return rows[0]
 }
