@@ -5,7 +5,7 @@ const table = "events"
 exports.findAll = async function (page, limit, search, sort, sortBy, category, location) {
   page = parseInt(page) || 1
   limit = parseInt(limit) || 5
-  search = search || ""
+  search = search.toLowerCase() || ""
   sort = sort || "id"
   sortBy = sortBy || "ASC"
   category = category || ""
@@ -32,7 +32,7 @@ exports.findAll = async function (page, limit, search, sort, sortBy, category, l
   JOIN "events" "e" ON "e"."id" = "ec"."eventId"
   JOIN "categories" "c" ON "c"."id" = "ec"."categoryId"
   JOIN "cities" "city" ON "city"."id" = "e"."cityId"
-  WHERE "e"."title" LIKE $3 AND "c"."name" LIKE $4 AND "city"."name" LIKE $5
+  WHERE LOWER("e"."title") LIKE $3 AND "c"."name" LIKE $4 AND "city"."name" LIKE $5
   ORDER BY "${sort}" ${sortBy} LIMIT $1 OFFSET $2
   `
 
