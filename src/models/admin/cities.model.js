@@ -5,7 +5,7 @@ const table = "cities"
 exports.findAll = async function (page, limit, search, sort, sortBy) {
   page = parseInt(page) || 1
   limit = parseInt(limit) || 5
-  search = search.toLowerCase() || ""
+  search = search ? search.toLowerCase() : ""
   sort = sort || "id"
   sortBy = sortBy || "ASC"
 
